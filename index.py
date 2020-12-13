@@ -2,15 +2,7 @@ import datetime
 from pymongo import MongoClient
 from bottle import run, template, get
 
-def connect_database():
-    a = None
-    try:
-        a = MongoClient('mongodb://172.17.0.4:27017/')
-    except Exception as ex:
-        print(ex)
-    return a
-
-cliente = connect_database()
+cliente = MongoClient('mongodb://localhost:27017/')
 banco = cliente.test_database
 pessoasdb = banco.test_collection
 
