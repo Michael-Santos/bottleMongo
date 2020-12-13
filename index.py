@@ -2,10 +2,17 @@ import datetime
 from pymongo import MongoClient
 from bottle import run, template, get
 
-cliente = MongoClient('mongodb://localhost:27017/')
+def connect_database():
+    a = None
+    try:
+        a = MongoClient('mongodb://172.17.0.4:27017/')
+    except Exception as ex:
+        print(ex)
+    return a
+
+cliente = connect_database()
 banco = cliente.test_database
 pessoasdb = banco.test_collection
-
 
 @get('/save/<name>')
 def index(name):
@@ -32,4 +39,4 @@ def lista():
 
     return itens
 
-run(host='localhost', port=8082)
+run(host='localhost', port=8083)
