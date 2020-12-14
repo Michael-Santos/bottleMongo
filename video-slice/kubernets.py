@@ -1,5 +1,5 @@
-from bottle import run, template, get, post, request, install, response
-import yaml
+from bottle import app, run, template, get, post, request, install, response
+from bottle_cors_plugin import cors_plugin
 import os
 
 class EnableCors(object):
@@ -26,6 +26,8 @@ def alterar_replicas(num_replicas):
     os.system("kubectl scale deployment " + DEPLOYMENT_NAME + " --replicas=" + num_replicas + "")
     return "sucesso"
 
-install(EnableCors())
+app = app()
+app.install(cors_plugin('*'))
+
 run(host='localhost', port=8082)
     
