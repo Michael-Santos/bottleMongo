@@ -22,7 +22,7 @@ class EnableCors(object):
 DEPLOYMENT_NAME = "nginx-deployment"
 
 @post('/num_replicas/<num_replicas>')
-def index(num_replicas):
+def alterar_replicas(num_replicas):
     os.system("kubectl scale deployment " + DEPLOYMENT_NAME + " --replicas=" + num_replicas + "")
     return "sucesso"
 
