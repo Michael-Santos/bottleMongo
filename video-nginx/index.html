@@ -1,0 +1,51 @@
+<!DOCTYPE html> 
+<html> 
+<body> 
+
+
+<p id="tempoDeVideo"></p>
+
+<video id="myVideo" width="400" controls>
+  <source src="bbb sunflower 1080p 60fps normal.mp4" type="video/mp4">
+  Your browser does not support HTML video.
+</video>
+
+
+<script>
+    var vid = document.getElementById("myVideo");
+    var intervalo = -1
+    setInterval(function(){
+        
+        var tempo = getCurTime();
+        if (tempo >= 0 && tempo <= 70 && intervalo !== 0) {
+            intervalo = 0;
+            console.log("Do something 0");
+        } else if (tempo > 70 && tempo <= 140 && intervalo !== 1) {
+            intervalo = 1;
+            console.log("Do something 1");
+        } else if (tempo > 140 && tempo <= 240 && intervalo !== 2) {
+            intervalo = 2;
+            console.log("Do something 2");
+        } else if (tempo > 240 && tempo <= 400 && intervalo !== 3) {
+            intervalo = 3;
+            console.log("Do something 3");
+        } else if (tempo > 400 && intervalo !== 4) {
+            intervalo = 4;
+            console.log("Do something 4");
+        }
+
+    }, 1000);
+
+    function getCurTime() {
+        document.getElementById("tempoDeVideo").innerHTML = 
+                "Tempo de video: " + parseInt(vid.currentTime) + " segundos";
+        return vid.currentTime;
+    }
+
+    function changeNumReplicas() {
+        
+    }
+</script> 
+
+</body> 
+</html>
