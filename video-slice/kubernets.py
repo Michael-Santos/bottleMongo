@@ -1,11 +1,6 @@
-from kubernetes import client, config
 from bottle import run, template, get, post, request, install, response
-
-# Configs can be set in Configuration class directly or using helper utility
-config.load_kube_config()
-
-v1 = client.AppsV1Api()
-#v1.patch_namespaced_deployment_scale("nginx-deployment", "default", "4")
+import yaml
+import os
 
 class EnableCors(object):
     name = 'enable_cors'
@@ -24,10 +19,11 @@ class EnableCors(object):
 
         return _enable_cors
 
+DEPLOYMENT_NAME = "nginx-deployment"
 
 @post('/num_replicas/<num_replicas>')
 def index(num_replicas):
-    print(num_replicas)
+    os.system("kubectl scale deployment " + DEPLOYMENT_NAME + " --replicas=" + num_replicas + "")
     return "sucesso"
 
 install(EnableCors())
