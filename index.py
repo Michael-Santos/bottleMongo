@@ -1,31 +1,35 @@
 import datetime
 from pymongo import MongoClient
-from bottle import run, template, get
+from bottle import run, template, get, post, request
+import os
+import json
 
-cliente = MongoClient('mongodb://localhost:27017/')
-banco = cliente.test_database
-pessoasdb = banco.test_collection
+MONGO_URL = os.getenv('MONGO_URL')
+cliente = MongoClient('mongodb://localhost:27017' if MONGO_URL == "" else MONGO_URL)
+metrica = cliente.metrica_database
+metricasdb = metrica.metrica_collection
 
-@get('/save/<name>')
-def index(name):
-    
-    data = datetime.datetime.now()
-    pessoa = {
-        "nome": name,
-        "salvo_em": data
+@post('/metrics')
+def index():
+    body = request.body.read()
+    jsonObj = json.loads(body)
+
+    nova_metrica = {
+        "umidade": jsonObj["umidade"],
+        "temperatura": jsonObj["temperatura"]
     }
 
-    pessoasdb.insert_one(pessoa)
+    metricasdb.insert_one(nova_metrica)
 
-    return template('<b>{{name}} foi salvo em {{data}}</b>', name=name, data=data)
+    return "sucesso"
 
 
-@get('/')
+@get('/metrics')
 def lista():
     itens = "<ul>"
     
-    for x in pessoasdb.find():
-        itens += "<li>" + x['nome'] + " | salvo em: " + str(x['salvo_em']) + "</li>"
+    for x in metricasdb.find():
+        itens += "<li>Umidade: " + str(x['umidade']) + " | Temperatura: " + str(x['temperatura']) + "</li>"
      
     itens += "</ul>"
 
